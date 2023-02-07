@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eec3d44ce9b52e48a3d211c7b22bd83, type: 3}
+  m_Name: Data
+  m_EditorClassIdentifier: 
+  ballExample: {fileID: 2864339560397244736, guid: dfafbe157d7695843a290b8f989bb337, type: 3}
+  mainBall: {fileID: 1747812753676898939, guid: 1462b120fc1203d4fa3f15a15690324c, type: 3}
+  ballRadius: 0.35
