@@ -2060,6 +2060,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5ec3729a78afd41ade847cce4b15ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 81f22912e695d2543bedb4b2beb500c9, type: 2}
+  mainBall: {fileID: 1630825566}
+  poolSystem: {fileID: 904382134}
   balls:
   - {fileID: 1300472756}
   - {fileID: 11761321}
@@ -2076,7 +2079,6 @@ MonoBehaviour:
   - {fileID: 1907901249}
   - {fileID: 1952947429}
   - {fileID: 444004359}
-  data: {fileID: 11400000, guid: 81f22912e695d2543bedb4b2beb500c9, type: 2}
 --- !u!4 &1662051747
 Transform:
   m_ObjectHideFlags: 0

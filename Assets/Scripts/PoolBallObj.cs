@@ -30,6 +30,8 @@ public class PoolBallObj : MonoBehaviour, IPoolObject
         ballStopSpeedThreshold = data.ballStopSpeedThreshold;
     }
 
+    public int GetTransformHashCode() => transform.GetHashCode();
+
     public void Reset()
     {
         transform.position = startPosition;

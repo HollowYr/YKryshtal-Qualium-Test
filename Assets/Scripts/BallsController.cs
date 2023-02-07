@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,8 +6,29 @@ using UnityEngine;
 
 public class BallsController : MonoBehaviour
 {
-    [SerializeField] private Transform[] balls;
     [SerializeField] private Data data;
+    [SerializeField] private Transform mainBall;
+    [SerializeField] private PoolSystem poolSystem;
+    [SerializeField] private Transform[] balls;
+    int mainBallHashCode;
+    void Start()
+    {
+        mainBallHashCode = mainBall.GetHashCode();
+        data.OnBallDestroyed += OnBallDestroyed;
+        Application.quitting += Unsubscribe;
+    }
+
+    private void Unsubscribe() => data.OnBallDestroyed -= OnBallDestroyed;
+
+    private void OnBallDestroyed(int hashCode)
+    {
+        if (mainBallHashCode == hashCode)
+        {
+            poolSystem.ResetAllObjects();
+            return;
+        }
+    }
+
     void OnValidate()
     {
         balls = GetComponentsInChildren<Transform>().Where(t => t.transform != this.transform).ToArray();

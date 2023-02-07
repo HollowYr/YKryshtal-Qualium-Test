@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IPoolObject
 {
+    public int GetTransformHashCode();
     public void Init();
     public void Disable();
     public void Enable();

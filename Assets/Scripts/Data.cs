@@ -19,10 +19,16 @@ public class Data : ScriptableObject
     internal Vector2 forceMinMax;
 
     public event Action<float> OnPowerChanged;
+    public event Action<int> OnBallDestroyed;
 
     public void InvokeOnPowerChanged(float power)
     {
         OnPowerChanged?.Invoke(power);
+    }
+
+    public void InvokeOnBallDestroyed(int hashCode)
+    {
+        OnBallDestroyed?.Invoke(hashCode);
     }
 
     private const float DEFAULT_SPHERE_RADIUS = .5f;
