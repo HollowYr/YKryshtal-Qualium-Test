@@ -204,7 +204,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &203404292
 Transform:
@@ -391,7 +391,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &345562781
 Transform:
@@ -609,7 +609,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &441714110
 Transform:
@@ -689,6 +689,10 @@ PrefabInstance:
     - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
       propertyPath: m_Name
       value: Cylinder (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
@@ -906,6 +910,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cylinder (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
 --- !u!4 &570130415 stripped
@@ -984,7 +992,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &675380899
 Transform:
@@ -1209,6 +1217,10 @@ PrefabInstance:
     - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
       propertyPath: m_Name
       value: Cylinder (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
@@ -1606,7 +1618,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1113669272
 Transform:
@@ -1775,7 +1787,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1404444854
 Transform:
@@ -1939,7 +1951,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1640476795
 Transform:
@@ -2165,6 +2177,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cylinder (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
 --- !u!4 &1981023401 stripped
@@ -2226,6 +2242,10 @@ PrefabInstance:
     - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
       propertyPath: m_Name
       value: Cylinder (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
@@ -2289,6 +2309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cylinder
       objectReference: {fileID: 0}
+    - target: {fileID: 8331358776874543133, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4a0ec74e3fd6a4bbd4421b526248cd, type: 3}
 --- !u!4 &179743916798474553 stripped
@@ -2303,6 +2327,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 316706182}
     m_Modifications:
+    - target: {fileID: -4503819758850860255, guid: 1462b120fc1203d4fa3f15a15690324c, type: 3}
+      propertyPath: trajectory
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1747812753676898919, guid: 1462b120fc1203d4fa3f15a15690324c, type: 3}
       propertyPath: m_Name
       value: MainBall

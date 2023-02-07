@@ -8,7 +8,7 @@ public class Data : ScriptableObject
     [Foldout("Balls properties"), SerializeField]
     private Transform ballExample;
     [Foldout("Balls properties"), SerializeField]
-    private Transform mainBall;
+    internal MainBallMovement mainBall;
     [Foldout("Balls properties"), SerializeField]
     internal float ballRadius;
     [Foldout("Balls properties"), SerializeField]

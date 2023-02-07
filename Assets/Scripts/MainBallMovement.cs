@@ -12,8 +12,11 @@ public class MainBallMovement : ImprovedMonoBehaviour
     // approximately half of the board length
     private Vector2 defaultForceMinMax = new Vector2(0, 10);
     private Rigidbody rigidbody;
-    private LineRenderer lineRenderer;
+    [SerializeField] private LineRenderer mainLineRenderer;
+    [SerializeField] private LineRenderer mainballReflectLineRenderer;
+    [SerializeField] private LineRenderer secondaryBallReflectLineRenderer;
     private Camera camera;
+    internal Vector3 velocity;
     private Vector3 ballPosition;
     private Vector3 startTouchPos;
     private Vector3 direction;
@@ -21,9 +24,11 @@ public class MainBallMovement : ImprovedMonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        lineRenderer = GetComponent<LineRenderer>();
+        mainLineRenderer = GetComponent<LineRenderer>();
         camera = Camera.main;
         forceMinMax = data.forceMinMax;
+
+        EnableLineRenderers(false);
     }
     // TODO transfer input to events
     void Update()
@@ -38,13 +43,13 @@ public class MainBallMovement : ImprovedMonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            Release();
+            Release(velocity);
         }
     }
     // TODO replace raycasts with raycastCommand for performance
     private void Click()
     {
-        lineRenderer.enabled = true;
+        EnableLineRenderers(true);
 
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, rayMaxDistance))
@@ -58,6 +63,7 @@ public class MainBallMovement : ImprovedMonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * 15f, Color.red, 100f);
     }
 
+    // TODO replace with trajectory prediction 
     private void Hold()
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -70,35 +76,50 @@ public class MainBallMovement : ImprovedMonoBehaviour
             // direction.y = 0f;
             distance = Mathf.Abs((currentPosition - startTouchPos).magnitude);
 
-            Debug.Log(distance.ToString().Color("green"));
             distance = distance.Remap(defaultForceMinMax.x, defaultForceMinMax.y,
                                forceMinMax.x, forceMinMax.y);
-            Debug.Log(distance.ToString().Color("red"));
-            Debug.DrawRay(currentPosition, direction, Color.red, Time.deltaTime);
 
             direction.y = 0;
+            velocity = distance * direction;
             ray = new Ray(ballPosition, direction);
-            if (Physics.Raycast(ray, out hit, rayMaxDistance))
+            // secondaryBallReflectLineRenderer.enabled = false;
+            if (Physics.SphereCast(ray, data.ballRadius, out hit, rayMaxDistance))
             {
 
-                lineRenderer.SetPosition(0, ballPosition);
-                Vector3 hitPoint = hit.point;
+                // secondaryBallReflectLineRenderer.enabled = true;
+
+                Vector3 hitPoint = hit.point + data.ballRadius * hit.normal;
                 hitPoint.y = ballPosition.y * 2;
-                lineRenderer.SetPosition(1, hitPoint);
+                Vector3 secondaryBallDirection = hitPoint - hit.normal;
+                secondaryBallReflectLineRenderer.SetPosition(0, hitPoint);
+                secondaryBallReflectLineRenderer.SetPosition(1, secondaryBallDirection);
+
+
+                mainballReflectLineRenderer.SetPosition(0, hitPoint);
+                // Vector3 reflectedDirection = Vector3.Reflect(ray.direction.normalized, hit.normal);
+
+                int normalRotation = (Vector3.Dot(hit.normal, Vector3.forward) > 0) ? 1 : -1;
+                Vector3 mainReflectionRotated = Quaternion.AngleAxis(90 * normalRotation, Vector3.up) * hit.normal;
+                mainballReflectLineRenderer.SetPosition(1, hitPoint + mainReflectionRotated);
+
+                mainLineRenderer.SetPosition(0, ballPosition);
+                mainLineRenderer.SetPosition(1, hitPoint);
             }
         }
     }
 
-    private void Release()
+    internal void Release(Vector3 velocity)
     {
-        rigidbody.AddForce(direction * distance, ForceMode.VelocityChange);
+        rigidbody.AddForce(velocity, ForceMode.VelocityChange);
 
-        lineRenderer.enabled = false;
+        EnableLineRenderers(false);
     }
 
-    // void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.green;
-    //     Gizmos.DrawSphere(startPosition, 1f);
-    // }
+    private void EnableLineRenderers(bool isEnabled)
+    {
+        mainLineRenderer.enabled = isEnabled;
+        mainballReflectLineRenderer.enabled = isEnabled;
+        secondaryBallReflectLineRenderer.enabled = isEnabled;
+    }
+
 }
