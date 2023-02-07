@@ -11,6 +11,10 @@ public class Data : ScriptableObject
     private Transform mainBall;
     [Foldout("Balls properties"), SerializeField]
     internal float ballRadius;
+    [Foldout("Balls properties"), SerializeField]
+    internal float ballStopSpeedThreshold = .1f;
+    [Foldout("Balls properties"), SerializeField]
+    internal Vector2 forceMinMax;
 
     private const float DEFAULT_SPHERE_RADIUS = .5f;
     void OnValidate()

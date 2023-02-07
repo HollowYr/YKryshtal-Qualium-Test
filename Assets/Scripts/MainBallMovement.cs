@@ -7,16 +7,23 @@ using UnityEngine;
 public class MainBallMovement : ImprovedMonoBehaviour
 {
     [SerializeField] private float rayMaxDistance = 10f;
+    [SerializeField] private Data data;
+    private Vector2 forceMinMax;
+    // approximately half of the board length
+    private Vector2 defaultForceMinMax = new Vector2(0, 10);
     private Rigidbody rigidbody;
     private LineRenderer lineRenderer;
     private Camera camera;
     private Vector3 ballPosition;
     private Vector3 startTouchPos;
+    private Vector3 direction;
+    private float distance;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         lineRenderer = GetComponent<LineRenderer>();
         camera = Camera.main;
+        forceMinMax = data.forceMinMax;
     }
     // TODO transfer input to events
     void Update()
@@ -37,6 +44,8 @@ public class MainBallMovement : ImprovedMonoBehaviour
     // TODO replace raycasts with raycastCommand for performance
     private void Click()
     {
+        lineRenderer.enabled = true;
+
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, rayMaxDistance))
         {
@@ -56,23 +65,25 @@ public class MainBallMovement : ImprovedMonoBehaviour
         {
             Vector3 currentPosition = hit.point;
             // currentPosition.y = 0;
-            Vector3 direction = ballPosition - currentPosition;
+            direction = ballPosition - currentPosition;
             direction = direction.normalized;
             // direction.y = 0f;
-            float distance = Mathf.Abs((currentPosition - startTouchPos).magnitude);
+            distance = Mathf.Abs((currentPosition - startTouchPos).magnitude);
 
-            Debug.Log(distance);
-
+            Debug.Log(distance.ToString().Color("green"));
+            distance = distance.Remap(defaultForceMinMax.x, defaultForceMinMax.y,
+                               forceMinMax.x, forceMinMax.y);
+            Debug.Log(distance.ToString().Color("red"));
             Debug.DrawRay(currentPosition, direction, Color.red, Time.deltaTime);
-            Debug.DrawRay(ballPosition, direction * distance, Color.green, Time.deltaTime);
 
             direction.y = 0;
             ray = new Ray(ballPosition, direction);
             if (Physics.Raycast(ray, out hit, rayMaxDistance))
             {
+
                 lineRenderer.SetPosition(0, ballPosition);
                 Vector3 hitPoint = hit.point;
-                hitPoint.y = ballPosition.y;
+                hitPoint.y = ballPosition.y * 2;
                 lineRenderer.SetPosition(1, hitPoint);
             }
         }
@@ -80,6 +91,9 @@ public class MainBallMovement : ImprovedMonoBehaviour
 
     private void Release()
     {
+        rigidbody.AddForce(direction * distance, ForceMode.VelocityChange);
+
+        lineRenderer.enabled = false;
     }
 
     // void OnDrawGizmos()

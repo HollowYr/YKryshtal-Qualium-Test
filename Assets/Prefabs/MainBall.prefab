@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -2748432826571507901}
   - component: {fileID: -4503819758850860255}
   - component: {fileID: 1986109749}
+  - component: {fileID: -8422199719316280507}
   m_Layer: 2
   m_Name: MainBall
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747812753676898919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.55, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -94,7 +95,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747812753676898919}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 049d0e764f4238a42a6eb4fd7ae1cd27, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -109,7 +110,7 @@ Rigidbody:
   m_GameObject: {fileID: 1747812753676898919}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -129,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayMaxDistance: 20
+  data: {fileID: 11400000, guid: 81f22912e695d2543bedb4b2beb500c9, type: 2}
 --- !u!120 &1986109749
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -228,3 +230,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &-8422199719316280507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747812753676898919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898bbc09994969e4bac11f923c5c0bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 81f22912e695d2543bedb4b2beb500c9, type: 2}
