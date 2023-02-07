@@ -80,6 +80,7 @@ public class MainBallMovement : ImprovedMonoBehaviour
                                forceMinMax.x, forceMinMax.y);
 
             direction.y = 0;
+            data.InvokeOnPowerChanged(distance);
             velocity = distance * direction;
             ray = new Ray(ballPosition, direction);
             // secondaryBallReflectLineRenderer.enabled = false;
@@ -111,7 +112,7 @@ public class MainBallMovement : ImprovedMonoBehaviour
     internal void Release(Vector3 velocity)
     {
         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
-
+        data.InvokeOnPowerChanged(0);
         EnableLineRenderers(false);
     }
 

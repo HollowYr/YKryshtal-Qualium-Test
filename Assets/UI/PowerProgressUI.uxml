@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/ColoredProgressBar.uss?fileID=7433441132597879392&amp;guid=80f5917dd8e287f459312f68cdb567b6&amp;type=3#ColoredProgressBar" />
+    <ui:VisualElement name="Base" style="flex-grow: 1; flex-shrink: 1; width: auto; height: auto;">
+        <ui:ProgressBar name="PowerProgress" low-value="90.63" style="rotate: 0; margin-left: 1px; padding-left: 0; width: 25%; translate: 35% 20px; height: 5%; flex-grow: 0; flex-shrink: 1; flex-basis: auto; min-height: auto;" />
+    </ui:VisualElement>
+</ui:UXML>

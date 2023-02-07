@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using System;
+
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Data", order = 1)]
 public class Data : ScriptableObject
 {
@@ -15,6 +17,13 @@ public class Data : ScriptableObject
     internal float ballStopSpeedThreshold = .1f;
     [Foldout("Balls properties"), SerializeField]
     internal Vector2 forceMinMax;
+
+    public event Action<float> OnPowerChanged;
+
+    public void InvokeOnPowerChanged(float power)
+    {
+        OnPowerChanged?.Invoke(power);
+    }
 
     private const float DEFAULT_SPHERE_RADIUS = .5f;
     void OnValidate()

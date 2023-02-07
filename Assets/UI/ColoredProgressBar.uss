@@ -1,0 +1,7 @@
+.coloredProgressBar {
+    height: 100px;
+}
+
+.coloredProgressBar .unity-progress-bar__container {
+    height: 100px;
+}

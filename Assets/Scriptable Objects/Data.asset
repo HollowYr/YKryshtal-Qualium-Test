@@ -16,4 +16,4 @@ MonoBehaviour:
   mainBall: {fileID: -4503819758850860255, guid: 1462b120fc1203d4fa3f15a15690324c, type: 3}
   ballRadius: 0.35
   ballStopSpeedThreshold: 0.3
-  forceMinMax: {x: 0, y: 20}
+  forceMinMax: {x: 0, y: 40}
