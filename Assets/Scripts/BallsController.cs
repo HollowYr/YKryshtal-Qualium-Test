@@ -25,7 +25,11 @@ public class BallsController : MonoBehaviour
         ballsCount = balls.Count();
     }
 
-    private void Unsubscribe() => data.OnBallDestroyed -= OnBallDestroyed;
+    private void Unsubscribe()
+    {
+        data.OnBallDestroyed -= OnBallDestroyed;
+        data.OnBallsReset -= ResetBallCount;
+    }
 
     private void OnBallDestroyed(int hashCode)
     {
