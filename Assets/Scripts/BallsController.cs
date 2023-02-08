@@ -10,19 +10,27 @@ public class BallsController : MonoBehaviour
     [SerializeField] private Transform mainBall;
     [SerializeField] private PoolSystem poolSystem;
     [SerializeField] private Transform[] balls;
-    int mainBallHashCode;
+    private int mainBallHashCode;
+    private int ballsCount;
     void Start()
     {
         mainBallHashCode = mainBall.GetHashCode();
         data.OnBallDestroyed += OnBallDestroyed;
         Application.quitting += Unsubscribe;
+        data.OnBallsReset += ResetBallCount;
+    }
+
+    private void ResetBallCount()
+    {
+        ballsCount = balls.Count();
     }
 
     private void Unsubscribe() => data.OnBallDestroyed -= OnBallDestroyed;
 
     private void OnBallDestroyed(int hashCode)
     {
-        if (mainBallHashCode == hashCode)
+        ballsCount--;
+        if (mainBallHashCode == hashCode || ballsCount <= 0)
         {
             poolSystem.ResetAllObjects();
             return;
@@ -32,7 +40,7 @@ public class BallsController : MonoBehaviour
     void OnValidate()
     {
         balls = GetComponentsInChildren<Transform>().Where(t => t.transform != this.transform).ToArray();
-        int ballsCount = balls.Count();
+        ResetBallCount();
         float xOffset = 0;
         float ballRadius = data.ballRadius;
         int count = 0;

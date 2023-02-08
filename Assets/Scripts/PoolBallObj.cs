@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolBallObj : MonoBehaviour, IPoolObject
+public class PoolBallObj : ImprovedMonoBehaviour, IPoolObject
 {
     [SerializeField] private Data data;
     private Vector3 startPosition;
@@ -39,6 +39,7 @@ public class PoolBallObj : MonoBehaviour, IPoolObject
         transform.localScale = startScale;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
+        data.InvokeOnBallsReset();
     }
 
     void Start()

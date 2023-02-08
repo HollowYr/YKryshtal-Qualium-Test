@@ -8,27 +8,28 @@ public class MainBallMovement : ImprovedMonoBehaviour
 {
     [SerializeField] private float rayMaxDistance = 10f;
     [SerializeField] private Data data;
+    [SerializeField] private Transform ballPredictionCircle;
+    [SerializeField] private LineRenderer launchDirectionLineRenderer;
+    [SerializeField] private LineRenderer mainballReflectLineRenderer;
+    [SerializeField] private LineRenderer secondaryBallReflectLineRenderer;
     private Vector2 forceMinMax;
     // approximately half of the board length
     private Vector2 defaultForceMinMax = new Vector2(0, 10);
     private Rigidbody rigidbody;
-    [SerializeField] private LineRenderer mainLineRenderer;
-    [SerializeField] private LineRenderer mainballReflectLineRenderer;
-    [SerializeField] private LineRenderer secondaryBallReflectLineRenderer;
     private Camera camera;
-    internal Vector3 velocity;
+    internal Vector3 launchVelocity;
     private Vector3 ballPosition;
     private Vector3 startTouchPos;
-    private Vector3 direction;
-    private float distance;
+    private Vector3 launchDirection;
+    private float distanceBetweenTouches;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        mainLineRenderer = GetComponent<LineRenderer>();
+        launchDirectionLineRenderer = GetComponent<LineRenderer>();
         camera = Camera.main;
         forceMinMax = data.forceMinMax;
-
-        EnableLineRenderers(false);
+        defaultForceMinMax.y = data.tableSize.x / 2;
+        EnableTrajectoryPredictionVisuals(false);
     }
     // TODO transfer input to events
     void Update()
@@ -43,84 +44,102 @@ public class MainBallMovement : ImprovedMonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            Release(velocity);
+            Release(launchVelocity);
         }
     }
     // TODO replace raycasts with raycastCommand for performance
     private void Click()
     {
-        EnableLineRenderers(true);
+        EnableTrajectoryPredictionVisuals(true);
 
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, rayMaxDistance))
         {
             ballPosition = transform.position;
-            // ballPosition.y = 0;
-
             startTouchPos = hit.point;
-            // startTouchPos.y = 0;
         }
-        Debug.DrawRay(ray.origin, ray.direction * 15f, Color.red, 100f);
     }
 
-    // TODO replace with trajectory prediction 
     private void Hold()
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, rayMaxDistance))
         {
-            Vector3 currentPosition = hit.point;
-            // currentPosition.y = 0;
-            direction = ballPosition - currentPosition;
-            direction = direction.normalized;
-            // direction.y = 0f;
-            distance = Mathf.Abs((currentPosition - startTouchPos).magnitude);
+            launchVelocity = GetLaunchVelocity(hit.point);
+            data.InvokeOnPowerChanged(distanceBetweenTouches);
 
-            distance = distance.Remap(defaultForceMinMax.x, defaultForceMinMax.y,
-                               forceMinMax.x, forceMinMax.y);
-
-            direction.y = 0;
-            data.InvokeOnPowerChanged(distance);
-            velocity = distance * direction;
-            ray = new Ray(ballPosition, direction);
-            // secondaryBallReflectLineRenderer.enabled = false;
+            ray = new Ray(ballPosition, launchDirection);
             if (Physics.SphereCast(ray, data.ballRadius, out hit, rayMaxDistance))
             {
-
-                // secondaryBallReflectLineRenderer.enabled = true;
-
                 Vector3 hitPoint = hit.point + data.ballRadius * hit.normal;
                 hitPoint.y = ballPosition.y * 2;
-                Vector3 secondaryBallDirection = hitPoint - hit.normal;
-                secondaryBallReflectLineRenderer.SetPosition(0, hitPoint);
-                secondaryBallReflectLineRenderer.SetPosition(1, secondaryBallDirection);
 
+                ballPredictionCircle.position = hitPoint;
 
-                mainballReflectLineRenderer.SetPosition(0, hitPoint);
-                // Vector3 reflectedDirection = Vector3.Reflect(ray.direction.normalized, hit.normal);
+                SetSecondaryReflectionLine(hitPoint, hit);
 
-                int normalRotation = (Vector3.Dot(hit.normal, Vector3.forward) > 0) ? 1 : -1;
-                Vector3 mainReflectionRotated = Quaternion.AngleAxis(90 * normalRotation, Vector3.up) * hit.normal;
-                mainballReflectLineRenderer.SetPosition(1, hitPoint + mainReflectionRotated);
+                SetMainReflectionLine(hitPoint, hit);
 
-                mainLineRenderer.SetPosition(0, ballPosition);
-                mainLineRenderer.SetPosition(1, hitPoint);
+                launchDirectionLineRenderer.SetPosition(0, ballPosition);
+                launchDirectionLineRenderer.SetPosition(1, hitPoint);
             }
         }
+
+        Vector3 GetLaunchVelocity(Vector3 hitPoint)
+        {
+            Vector3 currentPosition = hitPoint;
+            launchDirection = ballPosition - currentPosition;
+            launchDirection = launchDirection.normalized;
+            distanceBetweenTouches = Mathf.Abs((currentPosition - startTouchPos).magnitude);
+            distanceBetweenTouches = distanceBetweenTouches.Remap(defaultForceMinMax.x, defaultForceMinMax.y,
+                                                                forceMinMax.x, forceMinMax.y);
+
+            launchDirection.y = 0;
+            return launchDirection * distanceBetweenTouches;
+        }
+        void SetSecondaryReflectionLine(Vector3 hitPoint, RaycastHit hit)
+        {
+            Vector3 secondaryBallDirection = hitPoint - hit.normal;
+            secondaryBallReflectLineRenderer.SetPosition(0, hitPoint);
+            secondaryBallReflectLineRenderer.SetPosition(1, secondaryBallDirection);
+        }
+        void SetMainReflectionLine(Vector3 hitPoint, RaycastHit hit)
+        {
+            hit.transform.TryGetComponent<IPoolObject>(out IPoolObject hittedBall);
+
+            mainballReflectLineRenderer.SetPosition(0, hitPoint);
+
+            Vector3 mainReflection = Vector3.zero;
+            if (hittedBall == null)
+            {
+                Vector3 reflectedDirection = Vector3.Reflect(launchDirection.normalized, hit.normal);
+                mainReflection = reflectedDirection;
+                secondaryBallReflectLineRenderer.enabled = false;
+            }
+            else
+            {
+                secondaryBallReflectLineRenderer.enabled = true;
+                int normalRotation = (Vector3.Dot(hit.normal, Vector3.forward) > 0) ? 1 : -1;
+                Vector3 mainReflectionRotated = Quaternion.AngleAxis(90 * normalRotation, Vector3.up) * hit.normal;
+                mainReflection = mainReflectionRotated;
+            }
+            mainballReflectLineRenderer.SetPosition(1, hitPoint + mainReflection);
+        }
     }
+
 
     internal void Release(Vector3 velocity)
     {
         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         data.InvokeOnPowerChanged(0);
-        EnableLineRenderers(false);
+        EnableTrajectoryPredictionVisuals(false);
     }
 
-    private void EnableLineRenderers(bool isEnabled)
+    private void EnableTrajectoryPredictionVisuals(bool isEnabled)
     {
-        mainLineRenderer.enabled = isEnabled;
+        launchDirectionLineRenderer.enabled = isEnabled;
         mainballReflectLineRenderer.enabled = isEnabled;
         secondaryBallReflectLineRenderer.enabled = isEnabled;
+        ballPredictionCircle.gameObject.SetActive(isEnabled);
     }
-
 }

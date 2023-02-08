@@ -12,7 +12,6 @@ public class PoolSystem : MonoBehaviour
     {
         balls = ballsParent.GetComponentsInChildren<IPoolObject>();
         ballsCount = balls.Count();
-
     }
 
     public void ResetAllObjects()
@@ -23,7 +22,6 @@ public class PoolSystem : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
